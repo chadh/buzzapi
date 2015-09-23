@@ -1,2 +1,4 @@
-gobuzzapi
-usage.txt
+buzzapi
+config.toml
+buzzapi.sh
+functions.sh
