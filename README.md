@@ -74,6 +74,8 @@ environment will be used in all other environments unless overridden (e.g. the
 
 Note that you specify the environment with just the string after the period.  So to use the settings in the `environments.prod` section, you specify `--environment prod` on the command line.
 
+`config.toml` should either in the local directory or at `~/.config.toml`
+
 ## Example
 
 ```

@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"path"
 
 	"github.com/BurntSushi/toml"
+	"github.com/mitchellh/go-homedir"
 )
 
 // Config File stuff
@@ -26,8 +29,23 @@ func initializeConfig() {
 	//
 	// read config from config file
 	//
+	realConfFile := confFile
+	confPath, err := homedir.Dir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if _, err := os.Stat(path.Join(confPath, fmt.Sprintf(".%s", confFile))); os.IsNotExist(err) {
+		log.Info("%s/.%s does not exist, trying ./%s", confPath, confFile, confFile)
+
+		if _, err := os.Stat(confFile); os.IsNotExist(err) {
+			log.Critical("%s does not exist./%s", confFile)
+			os.Exit(1)
+		}
+	} else {
+		realConfFile = path.Join(confPath, fmt.Sprintf(".%s", confFile))
+	}
 	var config tomlConfig
-	if _, err := toml.DecodeFile(confFile, &config); err != nil {
+	if _, err := toml.DecodeFile(realConfFile, &config); err != nil {
 		log.Critical("%s", err)
 		os.Exit(1)
 	}
