@@ -97,21 +97,25 @@ func postRequest() {
 		case "api_result_data":
 			switch vv := v.(type) {
 			case string:
-				fmt.Printf("%s\n", vv)
+				fmt.Fprintf(outfile, "%s\n", vv)
+				outfile.Flush()
 			case int:
-				fmt.Printf("%d\n", vv)
+				fmt.Fprintf(outfile, "%d\n", vv)
+				outfile.Flush()
 			case []interface{}:
 				m, err := json.MarshalIndent(vv, "", "  ")
 				if err != nil {
 					log.Fatal(err)
 				}
-				fmt.Printf("%s\n", m)
+				fmt.Fprintf(outfile, "%s\n", m)
+				outfile.Flush()
 			case map[string]interface{}:
 				m, err := json.MarshalIndent(vv, "", "  ")
 				if err != nil {
 					log.Fatal(err)
 				}
-				fmt.Printf("%s\n", m)
+				fmt.Fprintf(outfile, "%s\n", m)
+				outfile.Flush()
 			}
 		case "api_error_info":
 			ei := v.(map[string]interface{})

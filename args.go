@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"os"
 
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -16,7 +17,6 @@ var (
 	clienthandle = app.Flag("client-handle", "Client handle").String()
 	showjson     = app.Flag("show-json", "Show JSON output").Bool()
 	async        = app.Flag("async", "Asynchronous mode").Bool()
-	globoff      = app.Flag("globoff", "Turn off globbing").Bool()
 	loglevel     = app.Flag("log-level", "Log Level").Default("warn").String()
 	output       = app.Flag("output", "output file").Short('o').String()
 	environment  = app.Flag("environment", "Environment").Default("test").String()
@@ -97,6 +97,7 @@ func (o Operation) String() string {
 var op Operation
 var res string
 var params *map[string]string
+var outfile *bufio.Writer
 
 func initializeArgs() {
 	//

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/op/go-logging"
@@ -21,7 +20,6 @@ func initializeLogger() {
 	lb := logging.AddModuleLevel(b2f)
 	logging.SetBackend(lb)
 	if *verbose {
-		fmt.Println("verbose mode")
 		logging.SetLevel(logging.DEBUG, "")
 	} else if *quiet {
 		logging.SetLevel(logging.CRITICAL, "")
