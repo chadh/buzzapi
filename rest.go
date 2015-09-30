@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"reflect"
 	"time"
 )
 
@@ -89,7 +90,6 @@ func postRequest() {
 	}
 	log.Info("response Body: %s", string(body))
 
-	// FIXME now process the response body and find the api_result_data and print it out
 	var g interface{}
 	json.Unmarshal(body, &g)
 	for k, v := range g.(map[string]interface{}) {
@@ -101,6 +101,10 @@ func postRequest() {
 				outfile.Flush()
 			case int:
 				fmt.Fprintf(outfile, "%d\n", vv)
+				outfile.Flush()
+			case float64:
+				// for some reason, status values are unmarshed as float64
+				fmt.Fprintf(outfile, "%.0f\n", vv)
 				outfile.Flush()
 			case []interface{}:
 				m, err := json.MarshalIndent(vv, "", "  ")
@@ -116,6 +120,8 @@ func postRequest() {
 				}
 				fmt.Fprintf(outfile, "%s\n", m)
 				outfile.Flush()
+			default:
+				log.Debug("%s is of type %s: %v", k, reflect.TypeOf(v), vv)
 			}
 		case "api_error_info":
 			ei := v.(map[string]interface{})
